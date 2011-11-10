@@ -1,9 +1,9 @@
 /*
  * Author: Sahil Grover
- * Description: A Library for google maps to allow users to select multiple markers at a time
+ * Description: An extension for google maps to allow users to select multiple markers at a time
  * Requires:
  * 		Google Maps v3 API
- * 		Polygon contains LatLng (https://raw.github.com/tparkin/Google-Maps-Point-in-Polygon/master/maps.google.polygon.containsLatLng.js)
+ * 		Polygon contains LatLng (http://code.google.com/p/google-maps-extensions/source/browse/google.maps.Polygon.getBounds.js)
  */
 
 
