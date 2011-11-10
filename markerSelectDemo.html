@@ -41,13 +41,10 @@
 				});
 				mapmarkers = [marker1, marker2];
 				mapmarkers2 = [marker3];
-				//mapmarkers = [];
-				//selmap.setMarkers(mapmarkers);
 				
 				selmap.addMarkerGroup('red',mapmarkers);
 				selmap.addMarkerGroup('blue',mapmarkers2);
 				
-				//selmap.addBoxListener('drag',updateLabels);
 				selmap.addBoxListener('dragstart',updateLabels);
 				selmap.addBoxListener('drag',updateLabels);
 				selmap.addBoxListener('dragend',updateLabels);
@@ -69,8 +66,6 @@
 				selmap.map.setOptions({
 					styles: myStyles
 				});
-				
-				selmap.polyicon = 'arrow_down.png';
 			}
 			
 		</script>
