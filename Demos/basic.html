@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SMap -- Basic Demo</title>
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+		<script type="text/javascript" src="maps.google.polygon.containsLatLng.js"></script>
+		<script type="text/javascript" src="../SMap.js"></script>
+		<script type="text/javascript">
+			
+			function init() {
+				initMap();
+				initButtons();
+			}
+			
+			window.onload = init;
+			
+			var selmap;
+			
+			function initMap() {
+				selmap = new SMap.markerSelectMap('map');
+				
+				var point1 = new google.maps.LatLng(41.404374,-81.663493);
+				var point2 = new google.maps.LatLng(41.40189,-81.663716);
+
+				var markers = [];
+
+				var marker1 = new google.maps.Marker({
+					position: point1
+				});
+				
+				var marker2 = new google.maps.Marker({
+					position: point2
+				});
+				
+				markers.push(marker1);
+				markers.push(marker2);
+				
+				selmap.setMarkers(markers);
+			}
+			
+			function initButtons() {
+				document.getElementById('bHand').addEventListener('click',function(event) {
+					document.getElementById('curtool').innerHTML = 'Hand';
+					selmap.setTool(SMap.Tools.HAND);
+				});
+				document.getElementById('bBox').addEventListener('click',function(event) {
+					document.getElementById('curtool').innerHTML = 'Box';
+					selmap.setTool(SMap.Tools.BOX);
+				});
+				document.getElementById('bPolygon').addEventListener('click',function(event) {
+					document.getElementById('curtool').innerHTML = 'Polygon';
+					selmap.setTool(SMap.Tools.POLYGON);
+				});
+			}
+			
+		</script>
+	</head>
+	<body>
+		<div id="map" style="width: 70%; height: 500px; margin: 20px auto;"></div>
+		<div style="margin: auto; width: 200px; text-align: center;">
+			<input type="button" id="bHand" value="Hand" />
+			<input type="button" id="bBox" value="Box" />
+			<input type="button" id="bPolygon" value="Polygon" />
+		</div>
+		<div style="margin: auto: width: 300px; text-align: center;">
+			<div>
+				<label>Current Tool: </label>
+				<span id="curtool">Hand</span>
+			</div>
+		</div>
+	</body>
+</html>
