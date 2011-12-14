@@ -1,6 +1,6 @@
 /*
  * Author: Sahil Grover
- * Description: An Extension for google maps to allow users to select multiple markers at a time
+ * Description: A lasso extension for google maps to allow users to select multiple markers at a time
  * Requires:
  * 		Google Maps v3 API
  * 		Polygon contains LatLng (https://raw.github.com/tparkin/Google-Maps-Point-in-Polygon/master/maps.google.polygon.containsLatLng.js)
@@ -22,7 +22,7 @@ var SMap = {
 	 */
 	markerSelectMap: function(mapid)
 	{
-		//private
+		/** Private Members */
 		var markerGroups = {};			//holds multiple named marker sets
 		var mapmarkers = [];			//list of map markers
 		var markerbounds;				//LatLngBounds for current marker set
@@ -57,6 +57,8 @@ var SMap = {
 		
 		var getthis = this;				//allow private functions to access public class variables
 		
+		
+		/** Public Members */
 		this.polyicon;					//icon for polygon
 		this.dragpolyonhand = false;	//can user drag the polygon markers when the hand tool is selected
 		
