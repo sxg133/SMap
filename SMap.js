@@ -1,9 +1,9 @@
 /*
  * Author: Sahil Grover
- * Description: An extension for google maps to allow users to select multiple markers at a time
+ * Description: An Extension for google maps to allow users to select multiple markers at a time
  * Requires:
  * 		Google Maps v3 API
- * 		Polygon contains LatLng (http://code.google.com/p/google-maps-extensions/source/browse/google.maps.Polygon.getBounds.js)
+ * 		Polygon contains LatLng (https://raw.github.com/tparkin/Google-Maps-Point-in-Polygon/master/maps.google.polygon.containsLatLng.js)
  */
 
 
@@ -58,6 +58,7 @@ var SMap = {
 		var getthis = this;				//allow private functions to access public class variables
 		
 		this.polyicon;					//icon for polygon
+		this.dragpolyonhand = false;	//can user drag the polygon markers when the hand tool is selected
 		
 		//initialize map
 		this.map = new google.maps.Map(document.getElementById(mapid), {
@@ -80,7 +81,7 @@ var SMap = {
 			}
 			if (mapmarkers.length > 1)
 			{
-				for (var i=0;i<mapmarkers.length;i++) {
+				for (var i=0, ii=mapmarkers.length; i<ii; i++) {
 					//set map
 					mapmarkers[i].setMap(this.map);
 					//extend bounds
@@ -106,7 +107,7 @@ var SMap = {
 			mapmarkers = mapmarkers.concat(markerset);
 			markerbounds = new google.maps.LatLngBounds();
 			if (mapmarkers.length > 1) {
-				for (var i=0;i<mapmarkers.length;i++) {
+				for (var i=0, ii=mapmarkers.length; i<ii; i++) {
 					//set map
 					mapmarkers[i].setMap(this.map);
 					//extend bounds
@@ -163,7 +164,7 @@ var SMap = {
 		 */
 		this.getSelectedMarkers = function() {
 			var selectedmarkers = [];
-			for (var i=0;i<mapmarkers.length;i++) {
+			for (var i=0, ii=mapmarkers.length; i<ii; i++) {
 				if (this.isSelected(mapmarkers[i])) {
 					selectedmarkers.push(mapmarkers[i]);
 				}
@@ -181,9 +182,9 @@ var SMap = {
 			
 			var selectedMarkers = {};
 			
-			for (var i=0;i<groupName.length;i++) {
+			for (var i=0, ii=groupName.length; i<ii; i++) {
 				selectedMarkers[groupName[i]] = [];
-				for (var j=0;j<markerGroups[groupName[i]].length;j++) {
+				for (var j=0, jj=markerGroups[groupName[i]].length; j<jj; j++) {
 					if (this.isSelected(markerGroups[groupName[i]][j])) {
 						selectedMarkers[groupName[i]].push(markerGroups[groupName[i]][j]);
 					}
@@ -297,7 +298,7 @@ var SMap = {
 		 * Clears all map markers
 		 */
 		var clearMapMarkers = function() {
-			for (var i=0; i<mapmarkers.length; i++) {
+			for (var i=0, ii=mapmarkers.length; i<ii; i++) {
 				mapmarkers[i].setMap(null);
 			}
 		}
@@ -311,6 +312,13 @@ var SMap = {
 				draggable: true,
 				draggableCursor: ""
 			});
+			if (polymarkers.length > 0 && !getthis.dragpolyonhand) {
+				for (var i=0, ii=polymarkers.length; i < ii; i++) {
+					polymarkers[i].setOptions({
+							draggable: false
+					});
+				}
+			}
 		}
 		
 		/**
@@ -341,7 +349,7 @@ var SMap = {
 				google.maps.event.addDomListener(document,'mouseup',function(event){
 					mousedown = false;
 					if (maptool == SMap.Tools.BOX) {
-						for (var i=0;i<boxlisteners.dragend.length;i++) {
+						for (var i=0, ii=boxlisteners.dragend.length ;i<ii ;i++) {
 							boxlisteners.dragend[i](event);
 						}
 					}
@@ -370,6 +378,13 @@ var SMap = {
 				poly.setMap(getthis.map);
 				path = new google.maps.MVCArray();
 				poly.setPaths(new google.maps.MVCArray([path]));
+			}
+			else {
+				for (var i=0, ii=polymarkers.length; i < ii; i++) {
+					polymarkers[i].setOptions({
+							draggable: true
+					});
+				}
 			}
 			google.maps.event.addListener(getthis.map,'click',polyClick);
 			google.maps.event.addListener(poly,'click',polyClick);
@@ -402,7 +417,7 @@ var SMap = {
 			});
 			google.maps.event.addListener(box,'click',boxClick);
 			google.maps.event.addListener(box,'mousemove',boxMousemove);
-			for (var i=0;i<boxlisteners.dragstart.length;i++) {
+			for (var i=0, ii=boxlisteners.dragstart.length ;i<ii ;i++) {
 				boxlisteners.dragstart[i](event);
 			}
 		}
@@ -440,7 +455,7 @@ var SMap = {
 					sw = downpoint;
 				}
 				box.setBounds(new google.maps.LatLngBounds(sw, ne));
-				for (var i=0;i<boxlisteners.drag.length;i++) {
+				for (var i=0, ii=boxlisteners.drag.length; i<ii ;i++) {
 					boxlisteners.drag[i](event);
 				}
 			}
@@ -450,7 +465,7 @@ var SMap = {
 		 * Click event for box
 		 */
 		var boxClick = function(event) {
-			for (var i=0;i<boxlisteners.click;i++) {
+			for (var i=0, ii=boxlisteners.click; i<ii ;i++) {
 				boxlisteners.click[i](event);
 			}
 		}
@@ -477,7 +492,7 @@ var SMap = {
 			//delete marker on click
 			google.maps.event.addListener(m,'click',function() {
 				if (maptool != SMap.Tools.POLYGON) return;
-				for (var i=0;i<polymarkers.length && polymarkers[i] != m;i++);
+				for (var i=0, ii=polymarkers.length ;i<ii && polymarkers[i] != m; i++);
 				polymarkers.splice(i,1);
 				m.setMap(null);
 				path.removeAt(i);
@@ -488,29 +503,29 @@ var SMap = {
 			
 			//start drag for point
 			google.maps.event.addListener(m,'dragstart',function(event) {
-				for (var i=0;i<polylisteners.dragpointstart.length;i++) {
+				for (var i=0, ii=polylisteners.dragpointstart.length; i<ii ;i++) {
 					polylisteners.dragpointstart[i](event);
 				}
 			});
 			
 			//draggable polygon
 			google.maps.event.addListener(m,'drag',function(event) {
-				for (var i=0;i<polymarkers.length && polymarkers[i]!=m;i++);
+				for (var i=0, ii=polymarkers.length; i<ii && polymarkers[i]!=m; i++);
 				path.setAt(i,m.getPosition());
-				for (var i=0;i<polylisteners.dragpoint.length;i++) {
+				for (var i=0, ii=polylisteners.dragpoint.length; i<ii ;i++) {
 					polylisteners.dragpoint[i](event);
 				}
 			});
 			
 			//end drag for point
 			google.maps.event.addListener(m,'dragend',function(event) {
-				for (var i=0;i<polylisteners.dragpointend.length;i++) {
+				for (var i=0, ii=polylisteners.dragpointend.length; i<ii ;i++) {
 					polylisteners.dragpointend[i](event);
 				}
 			});
 			
 			//add user events
-			for (var i=0;i<polylisteners.addpoint.length;i++) {
+			for (var i=0, ii=polylisteners.addpoint.length; i<ii ;i++) {
 				polylisteners.addpoint[i](event);
 			}
 		}
