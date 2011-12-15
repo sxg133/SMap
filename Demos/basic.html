@@ -36,6 +36,12 @@
 				markers.push(marker2);
 				
 				selmap.setMarkers(markers);
+				
+				selmap.addBoxListener('drag', updateLabels);
+				selmap.addBoxListener('dragstart', updateLabels);
+				selmap.addPolygonListener('addpoint', updateLabels);
+				selmap.addPolygonListener('removepoint', updateLabels);
+				selmap.addPolygonListener('dragpoint', updateLabels);
 			}
 			
 			function initButtons() {
@@ -46,11 +52,17 @@
 				document.getElementById('bBox').addEventListener('click',function(event) {
 					document.getElementById('curtool').innerHTML = 'Box';
 					selmap.setTool(SMap.Tools.BOX);
+					updateLabels();
 				});
 				document.getElementById('bPolygon').addEventListener('click',function(event) {
 					document.getElementById('curtool').innerHTML = 'Polygon';
 					selmap.setTool(SMap.Tools.POLYGON);
+					updateLabels();
 				});
+			}
+			
+			function updateLabels() {
+				document.getElementById('selected').innerHTML = selmap.getSelectedMarkers().length;
 			}
 			
 		</script>
@@ -66,6 +78,10 @@
 			<div>
 				<label>Current Tool: </label>
 				<span id="curtool">Hand</span>
+			</div>
+			<div>
+				<label>Number of Markers Selected: </label>
+				<span id="selected">0</span>
 			</div>
 		</div>
 	</body>
