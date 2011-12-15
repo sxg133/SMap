@@ -14,7 +14,13 @@ Documentation
 
 Turn a div into a google map that allows users to select multiple markers with a box or polygon.
 
-Start by creating a basic div element:
+Start by including the required scripts:
+
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
+	<script type="text/javascript" src="https://raw.github.com/tparkin/Google-Maps-Point-in-Polygon/master/maps.google.polygon.containsLatLng.js"></script>
+	<script type="text/javascript" src="SMap.js"></script>
+
+Next, create a basic div element:
 
     <div id="map" style="height: 500px; width: 600px;"> </div>
     
@@ -200,7 +206,39 @@ Get the selected markers using the getSelectedMarkers method:
 		
 ### Options
 
+*	**dragpolyonhand**
+
+	Allow the user to drag the point of the polygon while using the hand tool.
+	
+		selmap.dragpolyonhand = true;
+		
+*	**polyicon**
+
+	Set a custom icon for the points on the polygon.
+	
+		selmap.polyicon = 'url to my icon'.
+		
+
+
 ### Events
+
+	You can add custom event handlers to the box and polygon tools.
+	
+*	**Box Events**
+
+	*	_dragstart_ -- will trigger when the user first clicks on the map with the box tool.
+	*	_drag_ -- will trigger continuously while the user is dragging the mouse on the map.
+	*	_dragstop_ -- will trigger when the user releases the drag.
+	
+*	**Polygon Events**
+
+	*	_addpoint_ -- will trigger when the user adds a new point to the polygon.
+	*	_removepoint_ -- will trigger when the user removes a new point to the polygon.
+	*	_dragpointstart_ -- will trigger when the user starts to drag a point on the polygon.
+	*	_dragpoint_ -- will trigger continuously while the user is dragging a point on the polygon.
+	*	_dragpointend_ -- will trigger when the user release the drag on a polygon point.
+	
+	
 
 Demos
 -----
