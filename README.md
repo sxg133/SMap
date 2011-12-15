@@ -3,7 +3,7 @@ SMap
 
 Author:	Sahil Grover
 
-Date:	2011-11-09 (yyyy-mm-dd)
+Date:	2011-11-09
 
 A lasso extension for google maps
 
@@ -63,6 +63,35 @@ Get the selected markers using the getSelectedMarkers method:
 
 
 ### Methods
+
+*	**addBoxListener(event_name, function)**
+	
+	Add a custom event to the box tool.
+	
+		selmap.addBoxListener('dragstart', function(event) {
+			//do stuff
+		});
+		
+	For more details, see the Events section.
+	
+*	**addMarkerGroup(name, markerset)**
+
+	Add a named group of markers to the map.
+	
+		var markers = [];
+
+		var marker1 = new google.maps.Marker({
+			position: new google.maps.LatLng(41.404374,-81.663493);
+		});
+		
+		var marker2 = new google.maps.Marker({
+			position: new google.maps.LatLng(41.40189,-81.663716);
+		});
+		
+		markers.push(marker1);
+		markers.push(marker2);
+		
+		selmap.addMarkerGroup('My Markers', markerset);
 
 ### Options
 
