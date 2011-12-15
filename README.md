@@ -24,7 +24,7 @@ Next, create a basic div element:
 
     <div id="map" style="height: 500px; width: 600px;"> </div>
     
-Next initialize the markerSelectMap class:
+Then initialize the markerSelectMap class:
 
     var selmap = new SMap.markerSelectMap('map');
     
@@ -243,4 +243,12 @@ Get the selected markers using the getSelectedMarkers method:
 Demos
 -----
 
-Coming soon...
+*	**basic.html**
+
+	The most basic use of the extension.  Simple marker setting and selecting.
+	
+*	**markerGroups.html**
+
+	Demonstrates grouping markers into groups, and distinguishing between which selected markers are in which groups.
+	
+
