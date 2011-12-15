@@ -42,7 +42,7 @@ The map will not display until you either add some markers:
 	
 	selmap.setMarkers(markers);
 	
-or manually set the map options:
+or manually set the map options ([google.maps.MapOptions](http://code.google.com/apis/maps/documentation/javascript/reference.html#MapOptions)):
 
 	selmap.map.setOptions({
 		center: new google.maps.LatLng(-34.397, 150.644),
@@ -66,13 +66,15 @@ Get the selected markers using the getSelectedMarkers method:
 
 *	**addBoxListener(event_name, function)**
 	
-	Add a custom event to the box tool.
+	Add a custom event handler to the box tool.
 	
 		selmap.addBoxListener('dragstart', function(event) {
 			//do stuff
 		});
 		
 	For more details, see the Events section.
+	
+	
 	
 *	**addMarkerGroup(name, markerset)**
 
@@ -91,8 +93,111 @@ Get the selected markers using the getSelectedMarkers method:
 		markers.push(marker1);
 		markers.push(marker2);
 		
-		selmap.addMarkerGroup('My Markers', markerset);
+		selmap.addMarkerGroup('group1', markerset);
+		
+		
+		
+*	**addPolygonListener(event_name, function)**
 
+	Add a custom event handler to the polygon tool.
+	
+		selmap.addPolygonListener('dragpointstart', function() {
+			//do stuff
+		});
+		
+		
+		
+*	**clearBoxListener(,event_name)**
+
+	Remove all custom event handlers from the box tool:
+	
+		selmap.clearBoxListener();
+		
+	or remove handlers for a specific event:
+	
+		selmap.clearBoxListener('dragstart');
+		
+*	**clearOverlays()**
+
+	Remove box or polygon on map.
+	
+		selmap.clearOverlays();
+		
+
+*	**clearPolygonListener(,event_name)**
+
+	Remove all custom event handlers from the polygon tool:
+	
+		selmap.clearPolygonListener();
+		
+	or remove handlers for a specific event:
+	
+		selmap.clearPolygonListener('dragpointstart');
+		
+		
+
+*	**getSelectedGroupMarkers(group_name)**
+
+	Returns selected markers for a particluar marker group(s).
+	
+		var markerGroups = selmap.getSelectedGroupMarkers( ['group1', 'group2'] );
+		var group1 = markerGroups.group1;
+		var group2 = markerGroups.group2;
+		
+	You can also get one group at a time, though this is slower than the method above:
+	
+		var group1 = selmap.getSelectedGroupMarkers('group1');
+		var group2 = selmap.getSelectedGroupMarkers('group2');
+		
+
+
+*	**getSelectedMarkers()**
+
+	Returns all selected markers.
+	
+		var markers = selmap.getSelectedMarkers();
+		
+	
+
+*	**isSelected(marker)**
+
+	Check if a specific marker is selected.
+	
+		if (selmap.isSelected(mymarker))
+			alert('My marker is selected.');
+			
+	
+
+*	**setBoxOptions(boxoptions)**
+
+	Set options for the box rectangle ([google.maps.RectangleOptions](http://code.google.com/apis/maps/documentation/javascript/reference.html#RectangleOptions)).
+	
+		selmap.setBoxOptions({
+			fillColor: 'green'
+		});
+		
+		
+
+*	**setPolygonOptions(polyoptions)**
+
+	Set options for the polygon ([google.PolygonOptions](http://code.google.com/apis/maps/documentation/javascript/reference.html#PolygonOptions)).
+	
+		selmap.setPolygonOptions({
+			fillColor: 'blue'
+		});
+
+
+
+*	**setTool(tool)**
+
+	Set the current tool for the map.
+	
+		selmap.setTool(SMap.Tools.HAND);
+		selmap.setTool(SMap.Tools.BOX);
+		selmap.setTool(SMap.Tools.POLYGON);
+		
+		
+		
 ### Options
 
 ### Events
