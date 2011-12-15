@@ -45,6 +45,11 @@
 			}
 			
 			function initButtons() {
+				if (typeof(document.addEventListener) == "undefined") {
+					initButtonsIE();
+					return;
+				}
+				
 				document.getElementById('bHand').addEventListener('click',function(event) {
 					document.getElementById('curtool').innerHTML = 'Hand';
 					selmap.setTool(SMap.Tools.HAND);
@@ -59,6 +64,30 @@
 					selmap.setTool(SMap.Tools.POLYGON);
 					updateLabels();
 				});
+				document.getElementById('bClear').addEventListener('click', function(event){
+					selmap.clearOverlays();
+				});
+			}
+			
+			function initButtonsIE() {
+				
+				document.getElementById('bHand').onclick = function(event) {
+					document.getElementById('curtool').innerHTML = 'Hand';
+					selmap.setTool(SMap.Tools.HAND);
+				};
+				document.getElementById('bBox').onclick = function(event) {
+					document.getElementById('curtool').innerHTML = 'Box';
+					selmap.setTool(SMap.Tools.BOX);
+					updateLabels();
+				};
+				document.getElementById('bPolygon').onclick = function(event) {
+					document.getElementById('curtool').innerHTML = 'Polygon';
+					selmap.setTool(SMap.Tools.POLYGON);
+					updateLabels();
+				};
+				document.getElementById('bClear').onclick = function(event) {
+					selmap.clearOverlays();
+				};
 			}
 			
 			function updateLabels() {
@@ -73,6 +102,7 @@
 			<input type="button" id="bHand" value="Hand" />
 			<input type="button" id="bBox" value="Box" />
 			<input type="button" id="bPolygon" value="Polygon" />
+			<input type="button" id="bClear" value="Clear" />
 		</div>
 		<div style="margin: auto: width: 300px; text-align: center;">
 			<div>
