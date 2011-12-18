@@ -222,7 +222,7 @@ Get the selected markers using the getSelectedMarkers method:
 
 ### Events
 
-	You can add custom event handlers to the box and polygon tools.
+You can add custom event handlers to the box and polygon tools.
 	
 *	**Box Events**
 
