@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>SMap -- Basic Demo</title>
+		<title>SMap -- Marker Groups Demo</title>
+		
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
 		<script type="text/javascript" src="maps.google.polygon.containsLatLng.js"></script>
 		<script type="text/javascript" src="../SMap.js"></script>
+		
 		<script type="text/javascript">
+			
+			window.onload = init;
 			
 			function init() {
 				initMap();
 				initButtons();
 			}
-			
-			window.onload = init;
 			
 			var selmap;
 			
@@ -22,7 +24,7 @@
 				var point1 = new google.maps.LatLng(41.404374,-81.663493);
 				var point2 = new google.maps.LatLng(41.40189,-81.663716);
 
-				var markers = [];
+				var redmarkers = [];
 
 				var marker1 = new google.maps.Marker({
 					position: point1
@@ -32,10 +34,20 @@
 					position: point2
 				});
 				
-				markers.push(marker1);
-				markers.push(marker2);
+				redmarkers.push(marker1);
+				redmarkers.push(marker2);
 				
-				selmap.setMarkers(markers);
+				var point3 = new google.maps.LatLng(41.402720,-81.663269);
+				
+				var marker3 = new google.maps.Marker({
+					position: point3,
+					icon: 'http://www.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png'
+				});
+				
+				var bluemarkers = [marker3];
+				
+				selmap.addMarkerGroup('red',redmarkers);
+				selmap.addMarkerGroup('blue',bluemarkers);
 				
 				selmap.addBoxListener('drag', updateLabels);
 				selmap.addBoxListener('dragstart', updateLabels);
@@ -91,9 +103,11 @@
 			}
 			
 			function updateLabels() {
-				document.getElementById('selected').innerHTML = selmap.getSelectedMarkers().length;
+				var markers = selmap.getSelectedGroupMarkers(['red','blue']);
+				// you could also just get one at a time -- selmap.getSelectedGroupMarkers('red') -- but the method above is faster
+				document.getElementById('red').innerHTML = markers.red.length;
+				document.getElementById('blue').innerHTML = markers.blue.length;
 			}
-			
 		</script>
 	</head>
 	<body>
@@ -106,12 +120,16 @@
 		</div>
 		<div style="margin: auto: width: 300px; text-align: center;">
 			<div>
-				<label>Current Tool: </label>
+				<label for="curtool">Current Tool: </label>
 				<span id="curtool">Hand</span>
 			</div>
 			<div>
-				<label>Number of Markers Selected: </label>
-				<span id="selected">0</span>
+				<label for="red">Number of Red Markers Selected: </label>
+				<span id="red">0</span>
+			</div>
+			<div>
+				<label for="blue">Number of Blue Markers Selected: </label>
+				<span id="blue">0</span>
 			</div>
 		</div>
 	</body>
