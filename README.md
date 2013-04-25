@@ -28,7 +28,7 @@ Then initialize the markerSelectMap class:
 
     var selmap = new SMap.markerSelectMap('map');
     
-The map will not display until you either add some markers:
+The map will not display until you add some markers:
 
 	var point1 = new google.maps.LatLng(41.404374,-81.663493);
 	var point2 = new google.maps.LatLng(41.40189,-81.663716);
