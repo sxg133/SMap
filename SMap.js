@@ -77,7 +77,7 @@ SMap.markerSelectMap = function(mapid) {
 		//initialize bounds
 		markerbounds = new google.maps.LatLngBounds();
 		mapmarkers = _markers;
-		if (!mapmarkers || mapmarkers.length == 0)
+		if (!mapmarkers || mapmarkers.length === 0)
 		{
 			
 		}
@@ -92,7 +92,7 @@ SMap.markerSelectMap = function(mapid) {
 			//set bounds
 			this.map.fitBounds(markerbounds);
 		}
-		else if (mapmarkers.length==1)
+		else if (mapmarkers.length === 1)
 		{
 			mapmarkers[0].setMap(this.map);
 			this.map.setOptions({
@@ -118,7 +118,7 @@ SMap.markerSelectMap = function(mapid) {
 			//set bounds
 			this.map.fitBounds(markerbounds);
 		}
-		else if (mapmarkers.length == 1) {
+		else if (mapmarkers.length === 1) {
 			this.map.setOptions({
 				center: mapmarkers[0].getPosition(),
 				zoom: 15
@@ -132,7 +132,7 @@ SMap.markerSelectMap = function(mapid) {
 	 * Change Map Tool
 	 */
 	this.setTool = function(tool) {
-		if (maptool == tool)
+		if (maptool === tool)
 			return;
 			
 		//remove all event listeners
@@ -350,7 +350,7 @@ SMap.markerSelectMap = function(mapid) {
 		{
 			google.maps.event.addDomListener(document,'mouseup',function(event){
 				mousedown = false;
-				if (maptool == SMap.Tools.BOX) {
+				if (maptool === SMap.Tools.BOX) {
 					for (var i=0, ii=boxlisteners.dragend.length ;i<ii ;i++) {
 						boxlisteners.dragend[i](event);
 					}
@@ -375,7 +375,7 @@ SMap.markerSelectMap = function(mapid) {
 			draggable: false,
 			draggableCursor: "crosshair"
 		});
-		if (polymarkers.length == 0) {
+		if (polymarkers.length === 0) {
 			poly = new google.maps.Polygon();
 			poly.setMap(getthis.map);
 			path = new google.maps.MVCArray();
