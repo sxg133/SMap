@@ -6,6 +6,7 @@
  * 		Polygon contains LatLng (https://raw.github.com/tparkin/Google-Maps-Point-in-Polygon/master/maps.google.polygon.containsLatLng.js)
  */
 
+"use strict";
 
 /**
  * Google Marker Select Map Extension Namespace
