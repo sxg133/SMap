@@ -115,7 +115,7 @@ Get the selected markers using the getSelectedMarkers method:
 		
 		
 		
-*	**clearBoxListener(,event_name)**
+*	**clearBoxListener(event_name)**
 
 	Remove all custom event handlers from the box tool:
 	
@@ -132,7 +132,7 @@ Get the selected markers using the getSelectedMarkers method:
 		selmap.clearOverlays();
 		
 
-*	**clearPolygonListener(,event_name)**
+*	**clearPolygonListener(event_name)**
 
 	Remove all custom event handlers from the polygon tool:
 	
