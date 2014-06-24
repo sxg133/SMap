@@ -40,10 +40,10 @@
 				selmap.setMarkers(markers);
 				
 				selmap.addBoxListener('drag', updateLabels);
-				selmap.addBoxListener('dragstart', updateLabels);
-				selmap.addPolygonListener('addpoint', updateLabels);
-				selmap.addPolygonListener('removepoint', updateLabels);
-				selmap.addPolygonListener('dragpoint', updateLabels);
+				selmap.addBoxListener('dragStart', updateLabels);
+				selmap.addPolygonListener('addPoint', updateLabels);
+				selmap.addPolygonListener('removePoint', updateLabels);
+				selmap.addPolygonListener('dragPoint', updateLabels);
 			}
 			
 			function initButtons() {
@@ -52,16 +52,16 @@
 					return;
 				}
 				
-				document.getElementById('bHand').addEventListener('click',function(event) {
+				document.getElementById('bHand').addEventListener('click', function(event) {
 					document.getElementById('curtool').innerHTML = 'Hand';
 					selmap.setTool(SMap.Tools.HAND);
 				});
-				document.getElementById('bBox').addEventListener('click',function(event) {
+				document.getElementById('bBox').addEventListener('click', function(event) {
 					document.getElementById('curtool').innerHTML = 'Box';
 					selmap.setTool(SMap.Tools.BOX);
 					updateLabels();
 				});
-				document.getElementById('bPolygon').addEventListener('click',function(event) {
+				document.getElementById('bPolygon').addEventListener('click', function(event) {
 					document.getElementById('curtool').innerHTML = 'Polygon';
 					selmap.setTool(SMap.Tools.POLYGON);
 					updateLabels();

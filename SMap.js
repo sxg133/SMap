@@ -27,43 +27,42 @@ var SMap = SMap || {};
 	SMap.MarkerSelectMap = function(mapId, mapOptions) {
 		/** Private Members */
 		var markerGroups = {};			//holds multiple named marker sets
-		var mapmarkers = [];			//list of map markers
-		var markerbounds;				//LatLngBounds for current marker set
-		var maptool = SMap.Tools.HAND;	//selected map tool
+		var mapMarkers = [];			//list of map markers
+		var markerBounds;				//LatLngBounds for current marker set
+		var mapTool = SMap.Tools.HAND;	//selected map tool
 		
 		//box vars
-		var mousedown;					//true if mouse button is currently being held down
+		var mouseDown;					//true if mouse button is currently being held down
 		var box;						//google maps rectangle (user drags to create box)
-		var downpoint;					//initial click point when box was started
-		var mouseupadded = false;		//checks if mouseuplistener has already been added (workaround for no mouseup event on map)
-		var boxlisteners = 				//user events for box (dragstart,drag,dragend,click)
+		var downPoint;					//initial click point when box was started
+		var mouseUpAdded = false;		//checks if mouseuplistener has already been added (workaround for no mouseup event on map)
+		var boxListeners = 				//user events for box (dragStart,drag,dragEnd,click)
 			{
-				dragstart:[],
+				dragStart:[],
 				drag:[],
-				dragend:[],
+				dragEnd:[],
 				click:[]
 			};
 		
 		//poly vars
 		var poly;						//google maps polygon
-		var polymarkers = [];			//markers used to denote polygon edges
+		var polyMarkers = [];			//markers used to denote polygon edges
 		var path;						//polygon path array
-		//var polymarkerlisteners  = [];	//user events for polygon marker [OBSOLETE]
-		var polylisteners = 			//user events for polygon
+		var polyListeners = 			//user events for polygon
 			{
-				addpoint: [],
-				removepoint: [],
-				dragpointstart: [],
-				dragpoint: [],
-				dragpointend: []
+				addPoint: [],
+				removePoint: [],
+				dragPointStart: [],
+				dragPoint: [],
+				dragPointend: []
 			}
 		
-		var getthis = this;				//allow private functions to access public class variables
+		var thisSelectMap = this;				//allow private functions to access public class variables
 		
 		
 		/** Public Members */
-		this.polyicon;					//icon for polygon
-		this.dragpolyonhand = false;	//can user drag the polygon markers when the hand tool is selected
+		this.polyIcon;						//icon for polygon
+		this.allowDragPolyOnHand = false;	//can user drag the polygon markers when the hand tool is selected
 		
 		//initialize map
 		this.map = new google.maps.Map(document.getElementById(mapId), mapOptions);
@@ -71,32 +70,32 @@ var SMap = SMap || {};
 		/**
 		 * Sets new map markers
 		 */
-		this.setMarkers = function(_markers) {
+		this.setMarkers = function(markers) {
 			//first clear the current map markers
 			clearMapMarkers();
 			//initialize bounds
-			markerbounds = new google.maps.LatLngBounds();
-			mapmarkers = _markers;
-			if (!mapmarkers || mapmarkers.length === 0)
-			{
-				
+			markerBounds = new google.maps.LatLngBounds();
+			mapMarkers = markers;
+
+			if (!mapMarkers || mapMarkers.length === 0) {
+				return;
 			}
-			if (mapmarkers.length > 1)
-			{
-				for (var i=0, ii=mapmarkers.length; i<ii; i++) {
+
+			if (mapMarkers.length > 1) {
+				for (var i=0, len=mapMarkers.length; i<len; i++) {
 					//set map
-					mapmarkers[i].setMap(this.map);
+					mapMarkers[i].setMap(this.map);
 					//extend bounds
-					markerbounds.extend(mapmarkers[i].position);
+					markerBounds.extend(mapMarkers[i].position);
 				}
 				//set bounds
-				this.map.fitBounds(markerbounds);
+				this.map.fitBounds(markerBounds);
 			}
-			else if (mapmarkers.length === 1)
-			{
-				mapmarkers[0].setMap(this.map);
+
+			else if (mapMarkers.length === 1) {
+				mapMarkers[0].setMap(this.map);
 				this.map.setOptions({
-					center: mapmarkers[0].getPosition(),
+					center: mapMarkers[0].getPosition(),
 					zoom: 15
 				});
 			}
@@ -106,24 +105,24 @@ var SMap = SMap || {};
 		 * Add a marker group
 		 */
 		this.addMarkerGroup = function(name, markerset) {
-			mapmarkers = mapmarkers.concat(markerset);
-			markerbounds = new google.maps.LatLngBounds();
-			if (mapmarkers.length > 1) {
-				for (var i=0, ii=mapmarkers.length; i<ii; i++) {
+			mapMarkers = mapMarkers.concat(markerset);
+			markerBounds = new google.maps.LatLngBounds();
+			if (mapMarkers.length > 1) {
+				for (var i=0, len=mapMarkers.length; i<len; i++) {
 					//set map
-					mapmarkers[i].setMap(this.map);
+					mapMarkers[i].setMap(this.map);
 					//extend bounds
-					markerbounds.extend(mapmarkers[i].position);
+					markerBounds.extend(mapMarkers[i].position);
 				}
 				//set bounds
-				this.map.fitBounds(markerbounds);
-			}
-			else if (mapmarkers.length === 1) {
+				this.map.fitBounds(markerBounds);
+
+			} else if (mapMarkers.length === 1) {
 				this.map.setOptions({
-					center: mapmarkers[0].getPosition(),
+					center: mapMarkers[0].getPosition(),
 					zoom: 15
 				})
-				mapmarkers[0].setMap(this.map);
+				mapMarkers[0].setMap(this.map);
 			}
 			markerGroups[name] = markerset;
 		}
@@ -132,21 +131,22 @@ var SMap = SMap || {};
 		 * Change Map Tool
 		 */
 		this.setTool = function(tool) {
-			if (maptool === tool)
+			if (mapTool === tool) {
 				return;
+			}
 				
 			//remove all event listeners
 			google.maps.event.clearListeners(this.map, 'click');
 			google.maps.event.clearListeners(this.map, 'mousemove');
 			google.maps.event.clearListeners(this.map, 'mousedown');
 			
-			if (box)
-			{
-				google.maps.event.clearListeners(box,'mousemove');
-				google.maps.event.clearListeners(box,'click');
+			if (box) {
+				google.maps.event.clearListeners(box, 'mousemove');
+				google.maps.event.clearListeners(box, 'click');
 			}
-			if (poly)
-				google.maps.event.clearListeners(poly,'click');
+			if (poly) {
+				google.maps.event.clearListeners(poly, 'click');
+			}
 				
 			switch (tool) {
 				case SMap.Tools.HAND:
@@ -165,13 +165,13 @@ var SMap = SMap || {};
 		 * Returns an array of the selected markers
 		 */
 		this.getSelectedMarkers = function() {
-			var selectedmarkers = [];
-			for (var i=0, ii=mapmarkers.length; i<ii; i++) {
-				if (this.isSelected(mapmarkers[i])) {
-					selectedmarkers.push(mapmarkers[i]);
+			var selectedMarkers = [];
+			for (var i=0, len=mapMarkers.length; i<len; i++) {
+				if (this.isSelected(mapMarkers[i])) {
+					selectedMarkers.push(mapMarkers[i]);
 				}
 			}
-			return selectedmarkers;
+			return selectedMarkers;
 		}
 		
 		/**
@@ -184,9 +184,9 @@ var SMap = SMap || {};
 			
 			var selectedMarkers = {};
 			
-			for (var i=0, ii=groupName.length; i<ii; i++) {
+			for (var i=0, len=groupName.length; i<len; i++) {
 				selectedMarkers[groupName[i]] = [];
-				for (var j=0, jj=markerGroups[groupName[i]].length; j<jj; j++) {
+				for (var j=0, len=markerGroups[groupName[i]].length; j<len; j++) {
 					if (this.isSelected(markerGroups[groupName[i]][j])) {
 						selectedMarkers[groupName[i]].push(markerGroups[groupName[i]][j]);
 					}
@@ -200,10 +200,13 @@ var SMap = SMap || {};
 		 * Checks if map marker is selected
 		 */
 		this.isSelected = function(marker) {
-			if (box && box.getBounds())
+			if (box && box.getBounds()) {
 				return box.getBounds().contains(marker.getPosition());
-			if (poly)
+			}
+			if (poly) {
 				return poly.containsLatLng(marker.getPosition());
+			}
+			return false;
 		}
 		
 		/**
@@ -216,15 +219,15 @@ var SMap = SMap || {};
 			}
 			if (poly) {
 				poly.setMap(null);
-				for (var i=0;i<polymarkers.length;i++) {
-					polymarkers[i].setMap(null);
+				for (var i=0, len=polyMarkers.length; i<len; i++) {
+					polyMarkers[i].setMap(null);
 				}
-				polymarkers = [];
+				polyMarkers = [];
 				poly = new google.maps.Polygon();
-				poly.setMap(getthis.map);
+				poly.setMap(thisSelectMap.map);
 				path = new google.maps.MVCArray();
 				poly.setPaths(new google.maps.MVCArray([path]));
-				google.maps.event.addListener(poly,'click',polyClick);
+				google.maps.event.addListener(poly, 'click', polyClick);
 			}
 		}
 		
@@ -246,7 +249,7 @@ var SMap = SMap || {};
 		 * Allow user to add a listener to the box
 		 */
 		this.addBoxListener = function(event, event_handler) {
-			boxlisteners[event].push(event_handler);
+			boxListeners[event].push(event_handler);
 		}
 		
 		/**
@@ -254,12 +257,12 @@ var SMap = SMap || {};
 		 */
 		this.clearBoxListener = function(event) {
 			if (!event) {
-				boxlisteners.drag = [];
-				boxlisteners.dragstart = [];
-				boxlisteners.dragend = [];
+				boxListeners.drag = [];
+				boxListeners.dragStart = [];
+				boxListeners.dragEnd = [];
 			}
 			else {
-				boxlisteners[event] = [];
+				boxListeners[event] = [];
 			}
 		}
 		
@@ -267,7 +270,7 @@ var SMap = SMap || {};
 		 * Allow user to add a listener to polygon
 		 */
 		this.addPolygonListener = function(event, event_handler) {
-			polylisteners[event].push(event_handler);
+			polyListeners[event].push(event_handler);
 		}
 		
 		/**
@@ -275,21 +278,14 @@ var SMap = SMap || {};
 		 */
 		this.clearPolygonListener = function(event) {
 			if (!event) {
-				polylisteners.addpoint = [];
-				polylisteners.removepoint = [];
-				polylisteners.dragpoint = [];
+				polyListeners.addPoint = [];
+				polyListeners.removePoint = [];
+				polyListeners.dragPoint = [];
 			}
 			else {
-				polylisteners[event] = [];
+				polyListeners[event] = [];
 			}
 		}
-		
-		/** 
-		 *Allow user to add a listener to polygon markers [OBSOLETE]
-		 */
-		/*this.addPolygonMarkerListener = function(event, event_handler) {
-			polymarkerlisteners.push({event:event, event_handler:event_handler});
-		}*/
 		
 		
 		/*
@@ -300,8 +296,8 @@ var SMap = SMap || {};
 		 * Clears all map markers
 		 */
 		var clearMapMarkers = function() {
-			for (var i=0, ii=mapmarkers.length; i<ii; i++) {
-				mapmarkers[i].setMap(null);
+			for (var i=0, len=mapMarkers.length; i<len; i++) {
+				mapMarkers[i].setMap(null);
 			}
 		}
 		
@@ -309,15 +305,15 @@ var SMap = SMap || {};
 		 * Set up hand tool
 		 */
 		var handTool = function() {
-			maptool = SMap.Tools.HAND;
-			getthis.map.setOptions({
+			mapTool = SMap.Tools.HAND;
+			thisSelectMap.map.setOptions({
 				draggable: true,
 				draggableCursor: ""
 			});
-			if (polymarkers.length > 0 && !getthis.dragpolyonhand) {
-				for (var i=0, ii=polymarkers.length; i < ii; i++) {
-					polymarkers[i].setOptions({
-							draggable: false
+			if (polyMarkers.length > 0 && !thisSelectMap.allowDragPolyOnHand) {
+				for (var i=0, len=polyMarkers.length; i < len; i++) {
+					polyMarkers[i].setOptions({
+						draggable: false
 					});
 				}
 			}
@@ -328,38 +324,34 @@ var SMap = SMap || {};
 		 */
 		var boxTool = function() {
 			if (poly) {
-				//need to clear other overlays
-				getthis.clearOverlays();
+				thisSelectMap.clearOverlays();
 			}
-			maptool = SMap.Tools.BOX;
-			getthis.map.setOptions({
+			mapTool = SMap.Tools.BOX;
+			thisSelectMap.map.setOptions({
 				draggable: false,
 				draggableCursor: "default"
 			});
-			//set rectangle
-			if (!box)
-			{
+
+			if (!box) {
 				box = new google.maps.Rectangle();
-				google.maps.event.addListener(box,'mouseover',boxMousemove);
-				google.maps.event.addListener(box,'click',boxClick);
+				google.maps.event.addListener(box, 'mouseover', boxMousemove);
+				google.maps.event.addListener(box, 'click', boxClick);
 			}
 			
-			//set up event handlers for box tool
-			google.maps.event.addListener(getthis.map,'mousedown',boxMousedown);
-			if (!mouseupadded) //so we don't add it multiple times
-			{
-				google.maps.event.addDomListener(document,'mouseup',function(event){
-					mousedown = false;
-					if (maptool === SMap.Tools.BOX) {
-						for (var i=0, ii=boxlisteners.dragend.length ;i<ii ;i++) {
-							boxlisteners.dragend[i](event);
+			google.maps.event.addListener(thisSelectMap.map, 'mousedown', boxMouseDown);
+			if (!mouseUpAdded) {
+				google.maps.event.addDomListener(document, 'mouseup', function(event){
+					mouseDown = false;
+					if (mapTool === SMap.Tools.BOX) {
+						for (var i=0, len=boxListeners.dragEnd.length ;i<len ;i++) {
+							boxListeners.dragEnd[i](event);
 						}
 					}
 				});
-				mouseupadded = true;
+				mouseUpAdded = true;
 			}
 
-			google.maps.event.addListener(getthis.map,'mousemove',boxMousemove);
+			google.maps.event.addListener(thisSelectMap.map, 'mousemove', boxMousemove);
 		}
 		
 		/**
@@ -367,31 +359,33 @@ var SMap = SMap || {};
 		 */
 		var polygonTool = function() {
 			if (box) {
-				//need to clear other overlays
-				getthis.clearOverlays();
+				thisSelectMap.clearOverlays();
 			}
-			maptool = SMap.Tools.POLYGON;
-			getthis.map.setOptions({
+
+			mapTool = SMap.Tools.POLYGON;
+			thisSelectMap.map.setOptions({
 				draggable: false,
 				draggableCursor: "crosshair"
 			});
-			if (polymarkers.length === 0) {
+
+			if (polyMarkers.length === 0) {
 				poly = new google.maps.Polygon();
-				poly.setMap(getthis.map);
+				poly.setMap(thisSelectMap.map);
 				path = new google.maps.MVCArray();
 				poly.setPaths(new google.maps.MVCArray([path]));
-			}
-			else {
-				for (var i=0, ii=polymarkers.length; i < ii; i++) {
-					polymarkers[i].setOptions({
+
+			} else {
+				for (var i=0, len=polyMarkers.length; i < len; i++) {
+					polyMarkers[i].setOptions({
 							draggable: true
 					});
 				}
 			}
-			google.maps.event.addListener(getthis.map,'click',polyClick);
-			google.maps.event.addListener(poly,'click',polyClick);
-			if (!getthis.polyicon)
-				getthis.polyicon = "http://maps.google.com/mapfiles/ms/icons/green.png";
+
+			google.maps.event.addListener(thisSelectMap.map, 'click', polyClick);
+			google.maps.event.addListener(poly, 'click', polyClick);
+			if (!thisSelectMap.polyIcon)
+				thisSelectMap.polyIcon = "http://maps.google.com/mapfiles/ms/icons/green.png";
 		}
 		
 		/*
@@ -401,26 +395,28 @@ var SMap = SMap || {};
 		/**
 		 * Mouse down event handler for box tool
 		 */
-		var boxMousedown = function(event) {
+		var boxMouseDown = function(event) {
 			//only if box tool is selected
-			if (maptool != SMap.Tools.BOX)
+			if (mapTool != SMap.Tools.BOX) {
 				return;
+			}
 				
-			mousedown = true;
-			downpoint = event.latLng;
+			mouseDown = true;
+			downPoint = event.latLng;
 			
 			//clear current box
-			if (box)
+			if (box) {
 				box.setMap(null);
-			//create new box
+			}
+
 			box = new google.maps.Rectangle({
-				map: getthis.map,
-				bounds: new google.maps.LatLngBounds(downpoint, downpoint)
+				map: thisSelectMap.map,
+				bounds: new google.maps.LatLngBounds(downPoint, downPoint)
 			});
-			google.maps.event.addListener(box,'click',boxClick);
-			google.maps.event.addListener(box,'mousemove',boxMousemove);
-			for (var i=0, ii=boxlisteners.dragstart.length ;i<ii ;i++) {
-				boxlisteners.dragstart[i](event);
+			google.maps.event.addListener(box, 'click', boxClick);
+			google.maps.event.addListener(box, 'mousemove', boxMousemove);
+			for (var i=0, len=boxListeners.dragStart.length ;i<len ;i++) {
+				boxListeners.dragStart[i](event);
 			}
 		}
 		
@@ -428,37 +424,36 @@ var SMap = SMap || {};
 		 * Mouse move event handler for box tool
 		 */
 		var boxMousemove = function(event) {
-			if (maptool != SMap.Tools.BOX)
+			if (mapTool != SMap.Tools.BOX) {
 				return;
+			}
 				
-			if (mousedown)
-			{
-				// must make sure to pass southwest and northeast of box if i want this working correctly
-				var sw;
-				var ne;
-				if (event.latLng.lat() < downpoint.lat() && downpoint.lng() > event.latLng.lng()) //top right to bottom left drag
+			if (mouseDown) {
+				// must make sure to pass southwest and northeast of box -- will not work otherwise
+				var sw, ne;
+				if (event.latLng.lat() < downPoint.lat() && downPoint.lng() > event.latLng.lng()) //top right to bottom left drag
 				{
 					sw = event.latLng;
-					ne = downpoint;
+					ne = downPoint;
 				}
-				else if (event.latLng.lng() > downpoint.lng() && downpoint.lat() > event.latLng.lat()) //top left to bottom right drag
+				else if (event.latLng.lng() > downPoint.lng() && downPoint.lat() > event.latLng.lat()) //top left to bottom right drag
 				{
-					sw = new google.maps.LatLng(event.latLng.lat(), downpoint.lng());
-					ne = new google.maps.LatLng(downpoint.lat(), event.latLng.lng());
+					sw = new google.maps.LatLng(event.latLng.lat(), downPoint.lng());
+					ne = new google.maps.LatLng(downPoint.lat(), event.latLng.lng());
 				}
-				else if (event.latLng.lng() < downpoint.lng() && downpoint.lat() < event.latLng.lat()) //bottom right to top left drag
+				else if (event.latLng.lng() < downPoint.lng() && downPoint.lat() < event.latLng.lat()) //bottom right to top left drag
 				{
-					sw = new google.maps.LatLng(downpoint.lat(), event.latLng.lng());
-					ne = new google.maps.LatLng(event.latLng.lat(), downpoint.lng());
+					sw = new google.maps.LatLng(downPoint.lat(), event.latLng.lng());
+					ne = new google.maps.LatLng(event.latLng.lat(), downPoint.lng());
 				}
 				else //bottom left to top right drag
 				{
 					ne = event.latLng;
-					sw = downpoint;
+					sw = downPoint;
 				}
 				box.setBounds(new google.maps.LatLngBounds(sw, ne));
-				for (var i=0, ii=boxlisteners.drag.length; i<ii ;i++) {
-					boxlisteners.drag[i](event);
+				for (var i=0, len=boxListeners.drag.length; i<len ;i++) {
+					boxListeners.drag[i](event);
 				}
 			}
 		}
@@ -467,69 +462,74 @@ var SMap = SMap || {};
 		 * Click event for box
 		 */
 		var boxClick = function(event) {
-			for (var i=0, ii=boxlisteners.click; i<ii ;i++) {
-				boxlisteners.click[i](event);
+			for (var i=0, len=boxListeners.click; i<len ;i++) {
+				boxListeners.click[i](event);
 			}
-			
 		}
 		
 		/**
 		 * Click event for polygon
 		 */
 		var polyClick = function(event) {
-			if (maptool != SMap.Tools.POLYGON)
+			if (mapTool != SMap.Tools.POLYGON) {
 				return;	
+			}
 			
 			//add to polygon path
 			path.insertAt(path.length, event.latLng);
 			
 			//add marker at click point
 			var m = new google.maps.Marker({
-				map: getthis.map,
+				map: thisSelectMap.map,
 				position: event.latLng,
 				draggable: true,
-				icon: getthis.polyicon
+				icon: thisSelectMap.polyIcon
 			});
-			polymarkers.push(m);
+			polyMarkers.push(m);
 			
 			//delete marker on click
-			google.maps.event.addListener(m,'click',function() {
-				if (maptool != SMap.Tools.POLYGON) return;
-				for (var i=0, ii=polymarkers.length ;i<ii && polymarkers[i] != m; i++);
-				polymarkers.splice(i,1);
+			google.maps.event.addListener(m, 'click', function() {
+				if (mapTool != SMap.Tools.POLYGON) {
+					return;
+				}
+
+				for (var i=0, len=polyMarkers.length; i<len && polyMarkers[i] != m; i++);
+
+				polyMarkers.splice(i, 1);
 				m.setMap(null);
 				path.removeAt(i);
-				for (var i=0;i<polylisteners.removepoint.length;i++) {
-					polylisteners.removepoint[i](event);
+
+				for (var i=0, len=polyListeners.removePoint.length; i<len; i++) {
+					polyListeners.removePoint[i](event);
 				}
 			});
 			
 			//start drag for point
-			google.maps.event.addListener(m,'dragstart',function(event) {
-				for (var i=0, ii=polylisteners.dragpointstart.length; i<ii ;i++) {
-					polylisteners.dragpointstart[i](event);
+			google.maps.event.addListener(m, 'dragStart', function(event) {
+				for (var i=0, len=polyListeners.dragPointStart.length; i<len ;i++) {
+					polyListeners.dragPointStart[i](event);
 				}
 			});
 			
 			//draggable polygon
-			google.maps.event.addListener(m,'drag',function(event) {
-				for (var i=0, ii=polymarkers.length; i<ii && polymarkers[i]!=m; i++);
+			google.maps.event.addListener(m, 'drag', function(event) {
+				for (var i=0, len=polyMarkers.length; i<len && polyMarkers[i]!=m; i++);
 				path.setAt(i,m.getPosition());
-				for (var i=0, ii=polylisteners.dragpoint.length; i<ii ;i++) {
-					polylisteners.dragpoint[i](event);
+				for (var i=0, len=polyListeners.dragPoint.length; i<len; i++) {
+					polyListeners.dragPoint[i](event);
 				}
 			});
 			
 			//end drag for point
-			google.maps.event.addListener(m,'dragend',function(event) {
-				for (var i=0, ii=polylisteners.dragpointend.length; i<ii ;i++) {
-					polylisteners.dragpointend[i](event);
+			google.maps.event.addListener(m, 'dragEnd', function(event) {
+				for (var i=0, len=polyListeners.dragPointend.length; i<len; i++) {
+					polyListeners.dragPointend[i](event);
 				}
 			});
 			
 			//add user events
-			for (var i=0, ii=polylisteners.addpoint.length; i<ii ;i++) {
-				polylisteners.addpoint[i](event);
+			for (var i=0, len=polyListeners.addPoint.length; i<len; i++) {
+				polyListeners.addPoint[i](event);
 			}
 		}
 		

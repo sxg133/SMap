@@ -76,7 +76,7 @@ Get the selected markers using the getSelectedMarkers method:
 	
 	Add a custom event handler to the box tool.
 	
-		selmap.addBoxListener('dragstart', function(event) {
+		selmap.addBoxListener('dragStart', function(event) {
 			//do stuff
 		});
 		
@@ -109,7 +109,7 @@ Get the selected markers using the getSelectedMarkers method:
 
 	Add a custom event handler to the polygon tool.
 	
-		selmap.addPolygonListener('dragpointstart', function() {
+		selmap.addPolygonListener('dragPointStart', function() {
 			//do stuff
 		});
 		
@@ -123,7 +123,7 @@ Get the selected markers using the getSelectedMarkers method:
 		
 	or remove handlers for a specific event:
 	
-		selmap.clearBoxListener('dragstart');
+		selmap.clearBoxListener('dragStart');
 		
 *	**clearOverlays()**
 
@@ -140,7 +140,7 @@ Get the selected markers using the getSelectedMarkers method:
 		
 	or remove handlers for a specific event:
 	
-		selmap.clearPolygonListener('dragpointstart');
+		selmap.clearPolygonListener('dragPointStart');
 		
 		
 
@@ -208,17 +208,17 @@ Get the selected markers using the getSelectedMarkers method:
 		
 ### Options
 
-*	**dragpolyonhand**
+*	**allowDragPolyOnHand**
 
 	Allow the user to drag the point of the polygon while using the hand tool.
 	
-		selmap.dragpolyonhand = true;
+		selmap.allowDragPolyOnHand = true;
 		
-*	**polyicon**
+*	**polyIcon**
 
 	Set a custom icon for the points on the polygon.
 	
-		selmap.polyicon = 'url to my icon'.
+		selmap.polyIcon = 'url to my icon'.
 		
 
 
@@ -228,17 +228,17 @@ You can add custom event handlers to the box and polygon tools.
 	
 *	**Box Events**
 
-	*	_dragstart_ -- will trigger when the user first clicks on the map with the box tool.
+	*	_dragStart_ -- will trigger when the user first clicks on the map with the box tool.
 	*	_drag_ -- will trigger continuously while the user is dragging the mouse on the map.
 	*	_dragstop_ -- will trigger when the user releases the drag.
 	
 *	**Polygon Events**
 
-	*	_addpoint_ -- will trigger when the user adds a new point to the polygon.
-	*	_removepoint_ -- will trigger when the user removes a new point to the polygon.
-	*	_dragpointstart_ -- will trigger when the user starts to drag a point on the polygon.
-	*	_dragpoint_ -- will trigger continuously while the user is dragging a point on the polygon.
-	*	_dragpointend_ -- will trigger when the user release the drag on a polygon point.
+	*	_addPoint_ -- will trigger when the user adds a new point to the polygon.
+	*	_removePoint_ -- will trigger when the user removes a new point to the polygon.
+	*	_dragPointStart_ -- will trigger when the user starts to drag a point on the polygon.
+	*	_dragPoint_ -- will trigger continuously while the user is dragging a point on the polygon.
+	*	_dragPointend_ -- will trigger when the user release the drag on a polygon point.
 	
 	
 
