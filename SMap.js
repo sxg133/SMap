@@ -11,7 +11,7 @@
 /**
  * Google Marker Select Map Extension Namespace
  */
-var SMap = SMap || {}
+var SMap = SMap || {};
 	
 /**
  * Enum for current tool
