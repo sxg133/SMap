@@ -72,7 +72,7 @@ Get the selected markers using the getSelectedMarkers method:
 
 ### Methods
 
-*	**addBoxListener(event_name, function)**
+*	**addBoxListener(eventName, function)**
 	
 	Add a custom event handler to the box tool.
 	
@@ -105,7 +105,7 @@ Get the selected markers using the getSelectedMarkers method:
 		
 		
 		
-*	**addPolygonListener(event_name, function)**
+*	**addPolygonListener(eventName, function)**
 
 	Add a custom event handler to the polygon tool.
 	
@@ -115,7 +115,7 @@ Get the selected markers using the getSelectedMarkers method:
 		
 		
 		
-*	**clearBoxListener(event_name)**
+*	**clearBoxListener(eventName)**
 
 	Remove all custom event handlers from the box tool:
 	
@@ -132,7 +132,7 @@ Get the selected markers using the getSelectedMarkers method:
 		selmap.clearOverlays();
 		
 
-*	**clearPolygonListener(event_name)**
+*	**clearPolygonListener(eventName)**
 
 	Remove all custom event handlers from the polygon tool:
 	
@@ -144,7 +144,7 @@ Get the selected markers using the getSelectedMarkers method:
 		
 		
 
-*	**getSelectedGroupMarkers(group_name)**
+*	**getSelectedGroupMarkers(groupName)**
 
 	Returns selected markers for a particluar marker group(s).
 	
