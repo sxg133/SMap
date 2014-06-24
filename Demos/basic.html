@@ -17,7 +17,9 @@
 			var selmap;
 			
 			function initMap() {
-				selmap = new SMap.markerSelectMap('map');
+				selmap = new SMap.MarkerSelectMap('map', {
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				});
 				
 				var point1 = new google.maps.LatLng(41.404374,-81.663493);
 				var point2 = new google.maps.LatLng(41.40189,-81.663716);

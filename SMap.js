@@ -21,7 +21,7 @@ SMap.Tools = {HAND:0, BOX:1, POLYGON:2}
 /**
  * Class for turning a div into a Google Map with selectable markers
  */
-SMap.markerSelectMap = function(mapid) {
+SMap.MarkerSelectMap = function(mapId, mapOptions) {
 	/** Private Members */
 	var markerGroups = {};			//holds multiple named marker sets
 	var mapmarkers = [];			//list of map markers
@@ -63,10 +63,7 @@ SMap.markerSelectMap = function(mapid) {
 	this.dragpolyonhand = false;	//can user drag the polygon markers when the hand tool is selected
 	
 	//initialize map
-	this.map = new google.maps.Map(document.getElementById(mapid), {
-		//zoom: 15,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
-	});
+	this.map = new google.maps.Map(document.getElementById(mapId), mapOptions);
 	
 	/**
 	 * Sets new map markers

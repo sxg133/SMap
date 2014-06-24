@@ -24,9 +24,11 @@ Next, create a basic div element:
 
     <div id="map" style="height: 500px; width: 600px;"> </div>
     
-Then initialize the markerSelectMap class:
+Then initialize the MarkerSelectMap class:
 
-    var selmap = new SMap.markerSelectMap('map');
+	var selmap = new SMap.MarkerSelectMap('map', {
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	});
     
 The map will not display until you add some markers:
 
