@@ -6,8 +6,6 @@
  * 		Polygon contains LatLng (https://raw.github.com/tparkin/Google-Maps-Point-in-Polygon/master/maps.google.polygon.containsLatLng.js)
  */
 
-"use strict";
-
 
 /**
  * Google Marker Select Map Extension Namespace
@@ -15,6 +13,8 @@
 var SMap = SMap || {};
 
 (function() {
+
+	"use strict";
 	
 	/**
 	 * Enum for current tool
@@ -26,17 +26,17 @@ var SMap = SMap || {};
 	 */
 	SMap.MarkerSelectMap = function(mapId, mapOptions) {
 		/** Private Members */
-		var markerGroups = {};			//holds multiple named marker sets
-		var mapMarkers = [];			//list of map markers
-		var markerBounds;				//LatLngBounds for current marker set
-		var mapTool = SMap.Tools.HAND;	//selected map tool
+		var markerGroups = {};				//holds multiple named marker sets
+		var mapMarkers = [];				//list of map markers
+		var markerBounds;					//LatLngBounds for current marker set
+		var mapTool = SMap.Tools.HAND;		//selected map tool
 		
 		//box vars
-		var mouseDown;					//true if mouse button is currently being held down
-		var box;						//google maps rectangle (user drags to create box)
-		var downPoint;					//initial click point when box was started
-		var mouseUpAdded = false;		//checks if mouseuplistener has already been added (workaround for no mouseup event on map)
-		var boxListeners = 				//user events for box (dragStart,drag,dragEnd,click)
+		var mouseDown;						//true if mouse button is currently being held down
+		var box;							//google maps rectangle (user drags to create box)
+		var downPoint;						//initial click point when box was started
+		var mouseUpAdded = false;			//checks if mouseuplistener has already been added (workaround for no mouseup event on map)
+		var boxListeners = 					//user events for box (dragStart,drag,dragEnd,click)
 			{
 				dragStart:[],
 				drag:[],
@@ -45,10 +45,10 @@ var SMap = SMap || {};
 			};
 		
 		//poly vars
-		var poly;						//google maps polygon
-		var polyMarkers = [];			//markers used to denote polygon edges
-		var path;						//polygon path array
-		var polyListeners = 			//user events for polygon
+		var poly;							//google maps polygon
+		var polyMarkers = [];				//markers used to denote polygon edges
+		var path;							//polygon path array
+		var polyListeners = 				//user events for polygon
 			{
 				addPoint: [],
 				removePoint: [],
@@ -57,11 +57,12 @@ var SMap = SMap || {};
 				dragPointend: []
 			};
 		
-		var thisSelectMap = this;				//allow private functions to access public class variables
+		var thisSelectMap = this;			//allow private functions to access public class variables
 		
 		
 		/** Public Members */
-		this.polyIcon;						//icon for polygon
+		this.polyIcon = 					//icon for polygon
+			"http://maps.google.com/mapfiles/ms/icons/green.png";
 		this.allowDragPolyOnHand = false;	//can user drag the polygon markers when the hand tool is selected
 		
 		//initialize map
