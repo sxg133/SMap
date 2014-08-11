@@ -12,7 +12,7 @@
  */
 var SMap = SMap || {};
 
-(function() {
+(function(google) {
 
 	"use strict";
 	
@@ -536,4 +536,4 @@ var SMap = SMap || {};
 		
 	};
 
-})();
+})(google);
