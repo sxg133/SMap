@@ -19,7 +19,7 @@ var SMap = SMap || {};
 	/**
 	 * Enum for current tool
 	 */
-	SMap.Tools = {HAND:0, BOX:1, POLYGON:2}
+	SMap.Tools = {HAND:0, BOX:1, POLYGON:2};
 
 	/**
 	 * Class for turning a div into a Google Map with selectable markers
@@ -55,7 +55,7 @@ var SMap = SMap || {};
 				dragPointStart: [],
 				dragPoint: [],
 				dragPointend: []
-			}
+			};
 		
 		var thisSelectMap = this;				//allow private functions to access public class variables
 		
@@ -99,7 +99,7 @@ var SMap = SMap || {};
 					zoom: 15
 				});
 			}
-		}
+		};
 		
 		/**
 		 * Add a marker group
@@ -121,11 +121,11 @@ var SMap = SMap || {};
 				this.map.setOptions({
 					center: mapMarkers[0].getPosition(),
 					zoom: 15
-				})
+				});
 				mapMarkers[0].setMap(this.map);
 			}
 			markerGroups[name] = markerset;
-		}
+		};
 		
 		/**
 		 * Change Map Tool
@@ -159,7 +159,7 @@ var SMap = SMap || {};
 					polygonTool();
 					break;
 			}
-		}
+		};
 		
 		/**
 		 * Returns an array of the selected markers
@@ -172,7 +172,7 @@ var SMap = SMap || {};
 				}
 			}
 			return selectedMarkers;
-		}
+		};
 		
 		/**
 		 * Get selected markers in a particular marker group(s)
@@ -194,7 +194,7 @@ var SMap = SMap || {};
 			}
 			
 			return selectedMarkers;
-		}
+		};
 		
 		/**
 		 * Checks if map marker is selected
@@ -207,7 +207,7 @@ var SMap = SMap || {};
 				return poly.containsLatLng(marker.getPosition());
 			}
 			return false;
-		}
+		};
 		
 		/**
 		 * Clears all overlays
@@ -229,28 +229,28 @@ var SMap = SMap || {};
 				poly.setPaths(new google.maps.MVCArray([path]));
 				google.maps.event.addListener(poly, 'click', polyClick);
 			}
-		}
+		};
 		
 		/**
 		 * Allow user to set rectangle options
 		 */
 		this.setBoxOptions = function(boxoptions) {
 			box.setOptions(boxoptions);
-		}
+		};
 		
 		/**
 		 * Allow user to set polygon options
 		 */
 		this.setPolygonOptions = function(polyoptions) {
 			poly.setOptions(polyoptions);
-		}
+		};
 		
 		/**
 		 * Allow user to add a listener to the box
 		 */
 		this.addBoxListener = function(event, event_handler) {
 			boxListeners[event].push(event_handler);
-		}
+		};
 		
 		/**
 		 * Allow user to clear custom listeners
@@ -264,14 +264,14 @@ var SMap = SMap || {};
 			else {
 				boxListeners[event] = [];
 			}
-		}
+		};
 		
 		/**
 		 * Allow user to add a listener to polygon
 		 */
 		this.addPolygonListener = function(event, event_handler) {
 			polyListeners[event].push(event_handler);
-		}
+		};
 		
 		/**
 		 * Allow user to clear polygon listener
@@ -285,7 +285,7 @@ var SMap = SMap || {};
 			else {
 				polyListeners[event] = [];
 			}
-		}
+		};
 		
 		
 		/*
@@ -299,7 +299,7 @@ var SMap = SMap || {};
 			for (var i=0, len=mapMarkers.length; i<len; i++) {
 				mapMarkers[i].setMap(null);
 			}
-		}
+		};
 		
 		/**
 		 * Set up hand tool
@@ -317,7 +317,7 @@ var SMap = SMap || {};
 					});
 				}
 			}
-		}
+		};
 		
 		/**
 		 * Set up box tool
@@ -352,7 +352,7 @@ var SMap = SMap || {};
 			}
 
 			google.maps.event.addListener(thisSelectMap.map, 'mousemove', boxMousemove);
-		}
+		};
 		
 		/**
 		 * Set up polygon tool
@@ -386,7 +386,7 @@ var SMap = SMap || {};
 			google.maps.event.addListener(poly, 'click', polyClick);
 			if (!thisSelectMap.polyIcon)
 				thisSelectMap.polyIcon = "http://maps.google.com/mapfiles/ms/icons/green.png";
-		}
+		};
 		
 		/*
 		 * EVENT HANDLERS
@@ -418,7 +418,7 @@ var SMap = SMap || {};
 			for (var i=0, len=boxListeners.dragStart.length ;i<len ;i++) {
 				boxListeners.dragStart[i](event);
 			}
-		}
+		};
 		
 		/**
 		 * Mouse move event handler for box tool
@@ -456,7 +456,7 @@ var SMap = SMap || {};
 					boxListeners.drag[i](event);
 				}
 			}
-		}
+		};
 		
 		/**
 		 * Click event for box
@@ -465,7 +465,7 @@ var SMap = SMap || {};
 			for (var i=0, len=boxListeners.click; i<len ;i++) {
 				boxListeners.click[i](event);
 			}
-		}
+		};
 		
 		/**
 		 * Click event for polygon
@@ -531,8 +531,8 @@ var SMap = SMap || {};
 			for (var i=0, len=polyListeners.addPoint.length; i<len; i++) {
 				polyListeners.addPoint[i](event);
 			}
-		}
+		};
 		
-	}
+	};
 
 })();
