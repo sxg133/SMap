@@ -64,8 +64,7 @@ var SMap = SMap || {};
 
 
         /** Public Members */
-        this.polyIcon = //icon for polygon
-            "http://maps.google.com/mapfiles/ms/icons/green.png";
+        this.polyIcon = "http://maps.google.com/mapfiles/ms/icons/green.png"; //icon for polygon
         this.allowDragPolyOnHand = false; //can user drag the polygon markers when the hand tool is selected
 
         //initialize map
@@ -127,6 +126,13 @@ var SMap = SMap || {};
                 mapMarkers[0].setMap(this.map);
             }
             markerGroups[name] = markerset;
+        };
+
+        /**
+        *   Get the current map tool
+        */
+        this.getTool = function() {
+            return mapTool;
         };
 
         /**
