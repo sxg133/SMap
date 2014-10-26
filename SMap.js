@@ -57,7 +57,7 @@ var SMap = SMap || {};
                 removePoint: [],
                 dragPointStart: [],
                 dragPoint: [],
-                dragPointend: []
+                dragPointEnd: []
             };
 
         var thisSelectMap = this; //allow private functions to access public class variables
@@ -525,8 +525,8 @@ var SMap = SMap || {};
 
             //end drag for point
             google.maps.event.addListener(m, 'dragEnd', function(event) {
-                for (var i = 0, len = polyListeners.dragPointend.length; i < len; i++) {
-                    polyListeners.dragPointend[i](event);
+                for (var i = 0, len = polyListeners.dragPointEnd.length; i < len; i++) {
+                    polyListeners.dragPointEnd[i](event);
                 }
             });
 
