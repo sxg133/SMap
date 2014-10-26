@@ -238,7 +238,7 @@ You can add custom event handlers to the box and polygon tools.
 	*	_removePoint_ -- will trigger when the user removes a new point to the polygon.
 	*	_dragPointStart_ -- will trigger when the user starts to drag a point on the polygon.
 	*	_dragPoint_ -- will trigger continuously while the user is dragging a point on the polygon.
-	*	_dragPointend_ -- will trigger when the user release the drag on a polygon point.
+	*	_dragPointEnd_ -- will trigger when the user release the drag on a polygon point.
 	
 	
 
