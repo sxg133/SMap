@@ -2,8 +2,8 @@
  * Author: Sahil Grover
  * Description: A lasso extension for google maps to allow users to select multiple markers at a time
  * Requires:
- * 		Google Maps v3 API
- * 		Polygon contains LatLng (https://raw.github.com/tparkin/Google-Maps-Point-in-Polygon/master/maps.google.polygon.containsLatLng.js)
+ *      Google Maps v3 API
+ *      Polygon contains LatLng (https://raw.github.com/tparkin/Google-Maps-Point-in-Polygon/master/maps.google.polygon.containsLatLng.js)
  */
  
 /**
@@ -57,14 +57,15 @@ var SMap = SMap || {};
                 removePoint: [],
                 dragPointStart: [],
                 dragPoint: [],
-                dragPointEnd: []
+                dragPointend: []
             };
 
         var thisSelectMap = this; //allow private functions to access public class variables
 
 
         /** Public Members */
-        this.polyIcon = "http://maps.google.com/mapfiles/ms/icons/green.png"; //icon for polygon
+        this.polyIcon = //icon for polygon
+            "http://maps.google.com/mapfiles/ms/icons/green.png";
         this.allowDragPolyOnHand = false; //can user drag the polygon markers when the hand tool is selected
 
         //initialize map
@@ -129,13 +130,6 @@ var SMap = SMap || {};
         };
 
         /**
-        *   Get the current map tool
-        */
-        this.getTool = function() {
-            return mapTool;
-        };
-
-        /**
          * Change Map Tool
          */
         this.setTool = function(tool) {
@@ -192,9 +186,9 @@ var SMap = SMap || {};
 
             var selectedMarkers = {};
 
-            for (var i = 0, groupLen = groupName.length; i < groupLen; i++) {
+            for (var i = 0, len = groupName.length; i < len; i++) {
                 selectedMarkers[groupName[i]] = [];
-                for (var j = 0, markerLen = markerGroups[groupName[i]].length; j < markerLen; j++) {
+                for (var j = 0, len = markerGroups[groupName[i]].length; j < len; j++) {
                     if (this.isSelected(markerGroups[groupName[i]][j])) {
                         selectedMarkers[groupName[i]].push(markerGroups[groupName[i]][j]);
                     }
@@ -525,8 +519,8 @@ var SMap = SMap || {};
 
             //end drag for point
             google.maps.event.addListener(m, 'dragEnd', function(event) {
-                for (var i = 0, len = polyListeners.dragPointEnd.length; i < len; i++) {
-                    polyListeners.dragPointEnd[i](event);
+                for (var i = 0, len = polyListeners.dragPointend.length; i < len; i++) {
+                    polyListeners.dragPointend[i](event);
                 }
             });
 
