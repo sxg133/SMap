@@ -197,9 +197,9 @@ var SMap = SMap || {};
                 selectedMarkers[groupName[i]] = [];
             }
 
-            for (var i = 0, len = groupName.length; i < len; i++) {
+            for (var i = 0, groupLen = groupName.length; i < groupLen; i++) {
                 selectedMarkers[groupName[i]] = [];
-                for (var j = 0, len = markerGroups[groupName[i]].length; j < len; j++) {
+                for (var j = 0, markerLen = markerGroups[groupName[i]].length; j < len; j++) {
 
                     var markerSelected = thisSelectMap.isSelected(markerGroups[groupName[i]][j]);
                     if (!isSelected) {
